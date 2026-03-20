@@ -1,0 +1,17 @@
+export const spacing = {
+  p: ["padding"],
+  pt: ["padding-top"],
+  pb: ["padding-bottom"],
+  pr: ["padding-right"],
+  pl: ["padding-left"],
+  px: ["padding-left", "padding-right"],
+  py: ["padding-top", "padding-bottom"],
+  m: ["margin"],
+  mt: ["margin-top"],
+  mb: ["margin-bottom"],
+  mr: ["margin-right"],
+  ml: ["margin-left"],
+  mx: ["margin-left", "margin-right"],
+  my: ["margin-top", "margin-bottom"],
+  g: ["gap"],
+};
