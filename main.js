@@ -1,6 +1,6 @@
-import { hidesError, showError } from "./module/ui/reporter.js";
-import { takeCSSInput, takeHTMLInput } from "./module/engine/input.js";
-import { validHTML, isSafe } from "./module/engine/validator.js";
+import { hidesError } from "./module/ui/reporter.js";
+import { takeHTMLInput } from "./module/engine/input.js";
+import { validHTML } from "./module/engine/validator.js";
 import { resetInputFields, resetList } from "./module/ui/reseter.js";
 import { extractDetails } from "./module/engine/core.js";
 hidesError();
