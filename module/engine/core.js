@@ -5,10 +5,10 @@ function extractDetails(container) {
   const bodyElements = container.querySelectorAll("*");
   const pattern = "chai-";
   bodyElements.forEach((e) => {
-    const elementName = e.tagName;
+    let classes = [];
     classes.push(...e.classList);
-    const validClasses = classes.filter(e.startsWith(pattern));
-    const invalidClasses = classes.filter(!e.startsWith(pattern));
+    const validClasses = classes.filter((e) => e.startsWith(pattern));
+    const invalidClasses = classes.filter((e) => !e.startsWith(pattern));
 
     if (validClasses.length > 0) {
       validClasses.forEach((className) => {
@@ -16,29 +16,30 @@ function extractDetails(container) {
         const key = parts[1];
         const value = parts[2];
 
-        applyCSS(elementName, key, value);
+        applyCSS(e, key, value);
       });
-    } else {
-      showError("No valid classes found.");
     }
   });
 }
 
 function applyCSS(name, key, propertyValue) {
   const keyProperties = CHAI_DB[key]; // finding the actual mapped value
+  if (!keyProperties) showError("Invalid chai class.");
+  const category = keyProperties[0];
   let finalValue = propertyValue;
 
   // performing propertyValue validation
-  if (keyProperties[0] === "layout" || keyProperties[0] === "spacing") {
+  if (category === "layout" || category === "spacing") {
     if (isNaN(propertyValue)) {
       showError("Value must be an number");
+      return;
     }
 
     finalValue = propertyValue + "px";
   }
 
-  const cssProperties = keyProperties.slice(1);
-  cssProperties.forEach((property) => {
+  const cleanProps = keyProperties.slice(1);
+  cleanProps.forEach((property) => {
     name.style[property] = finalValue; // applying css
   });
 }

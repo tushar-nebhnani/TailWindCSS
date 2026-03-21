@@ -1,6 +1,6 @@
-import { showError } from "./module/ui/reporter.js";
+import { showError } from "../ui/reporter.js";
 
-function isSafe(str) {
+export function isSafe(str) {
   const lowerStr = str.toLowerCase();
   if (lowerStr.includes("<script") || lowerStr.includes("onclick")) {
     showError("SECURITY BREACH: Scripting tokens are forbidden in the buffer.");
@@ -10,7 +10,6 @@ function isSafe(str) {
 }
 
 export function validHTML(htmlContent) {
-  const livePreviewBody = document.getElementById("live-body");
   const htmlPattern = /<\/?[a-z][\s\S]*>/i;
 
   // Check 1: Empty check
@@ -36,7 +35,5 @@ export function validHTML(htmlContent) {
     showError("DOM ERROR: Input contains text but no renderable elements.");
     return false;
   }
-
-  livePreviewBody.innerHTML = htmlContent;
   return true;
 }

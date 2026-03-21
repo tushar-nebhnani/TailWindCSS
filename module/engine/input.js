@@ -1,4 +1,4 @@
-import { showError } from "./module/ui/reporter.js";
+import { showError } from "../ui/reporter.js";
 
 export function takeHTMLInput() {
   const inputHTML = document.getElementById("html-input");
