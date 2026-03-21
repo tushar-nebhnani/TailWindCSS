@@ -1,9 +1,9 @@
 export const layout = {
-  d: ["display"],
-  f: ["flex-direction"],
-  jc: ["justify-content"],
-  ai: ["align-items"],
-  w: ["width"],
-  h: ["height"],
-  z: ["z-index"],
+  d: ["layout", "display"],
+  f: ["layout", "flex-direction"],
+  jc: ["layout", "justify-content"],
+  ai: ["layout", "align-items"],
+  w: ["layout", "width"],
+  h: ["layout", "height"],
+  z: ["layout", "z-index"],
 };

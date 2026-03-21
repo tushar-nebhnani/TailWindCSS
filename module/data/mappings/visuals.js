@@ -1,10 +1,10 @@
 export const visuals = {
-  bg: ["background-color"],
-  t: ["color"],
-  br: ["border-radius"],
-  bw: ["border-width"],
-  bc: ["border-color"],
-  bs: ["border-style"],
-  o: ["opacity"],
-  sh: ["box-shadow"],
+  bg: ["visuals", "background-color"],
+  t: ["visuals", "color"],
+  br: ["visuals", "border-radius"],
+  bw: ["visuals", "border-width"],
+  bc: ["visuals", "border-color"],
+  bs: ["visuals", "border-style"],
+  o: ["visuals", "opacity"],
+  sh: ["visuals", "box-shadow"],
 };
