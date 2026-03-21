@@ -1,6 +1,8 @@
 import { hidesError, showError } from "./module/ui/reporter.js";
 import { takeCSSInput, takeHTMLInput } from "./module/engine/input.js";
 import { validHTML, isSafe } from "./module/engine/validator.js";
+import { resetInputFields, resetList } from "./module/ui/reseter.js";
+import { extractDetails } from "./module/engine/core.js";
 hidesError();
 
 const SVG_EYE_ON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
@@ -53,6 +55,15 @@ document.querySelectorAll(".style-row").forEach((row) => {
 ////////////////////////////////////////////////////////////////////////
 const runBtn = document.getElementById("run-script-btn");
 const livePreviewBody = document.getElementById("live-body");
+const resetBtn = document.getElementById("reset-button");
+
+function fullReset() {
+  resetInputFields();
+  resetList();
+  hidesError();
+  livePreviewBody.innerHTML =
+    ' <div class="live-empty-text"> write or upload html above <br /> then hit ▶ run script to preview </div> ';
+}
 
 runBtn.addEventListener("click", () => {
   const data = takeHTMLInput();
@@ -60,5 +71,8 @@ runBtn.addEventListener("click", () => {
   if (validHTML(data)) {
     console.log(data);
     livePreviewBody.innerHTML = data;
+    extractDetails(livePreviewBody);
   }
 });
+
+resetBtn.addEventListener("click", fullReset);

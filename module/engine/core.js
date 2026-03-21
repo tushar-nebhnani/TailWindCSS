@@ -1,7 +1,9 @@
-import { CHAI_DB } from "../data";
-import { showError } from "./module/ui/reporter.js";
+import { CHAI_DB } from "../data/index.js";
+import { showError } from "../ui/reporter.js";
 
-function extractDetails(container) {
+export function extractDetails(container) {
+  console.log("extracting details");
+
   const bodyElements = container.querySelectorAll("*");
   const pattern = "chai-";
   bodyElements.forEach((e) => {
@@ -15,6 +17,7 @@ function extractDetails(container) {
         const parts = className.split("-");
         const key = parts[1];
         const value = parts[2];
+        console.log("applying css");
 
         applyCSS(e, key, value);
       });
@@ -22,7 +25,10 @@ function extractDetails(container) {
   });
 }
 
-function applyCSS(name, key, propertyValue) {
+export function applyCSS(name, key, propertyValue) {
+  let successCount = 0;
+  let failedCount = 0;
+  const appliedCounter = document.getElementById("applied-count");
   const keyProperties = CHAI_DB[key]; // finding the actual mapped value
   if (!keyProperties) showError("Invalid chai class.");
   const category = keyProperties[0];
@@ -41,5 +47,7 @@ function applyCSS(name, key, propertyValue) {
   const cleanProps = keyProperties.slice(1);
   cleanProps.forEach((property) => {
     name.style[property] = finalValue; // applying css
+    successCount++;
   });
+  appliedCounter.textContent = `✓ ${successCount}`;
 }
