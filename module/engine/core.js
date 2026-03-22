@@ -4,9 +4,6 @@ import { addToAppliedList, addToFailedList } from "../ui/setterList.js";
 
 export function extractDetails(container) {
   const bodyElements = container.querySelectorAll("*");
-
-  let successCount = 0;
-  let failedCount = 0;
   const pattern = "chai-";
 
   bodyElements.forEach((e) => {
@@ -16,7 +13,6 @@ export function extractDetails(container) {
     const invalidClasses = classes.filter((c) => !c.startsWith(pattern));
 
     invalidClasses.forEach((className) => {
-      console.log("sjabda");
       addToFailedList(className, "not a chai class");
     });
 
