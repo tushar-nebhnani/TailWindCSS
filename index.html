@@ -1,287 +1,1493 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CHAI CSS — Developer Portfolio</title>
+    <title>Chai CSS — Utility-first CSS, Terminal-style</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=Orbitron:wght@400;600;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Clash+Display:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* ── TOKENS ─────────────────────────────────────────── */
+      :root {
+        --bg: #111111;
+        --bg2: #161616;
+        --bg3: #1c1c1c;
+        --surface: #1e1e1e;
+        --border: rgba(255, 255, 255, 0.07);
+        --border-hi: rgba(255, 255, 255, 0.13);
+
+        --green: #28c840;
+        --green-dim: rgba(40, 200, 64, 0.12);
+        --green-glow: 0 0 20px rgba(40, 200, 64, 0.35);
+
+        --cyan: #64d2ff;
+        --cyan-dim: rgba(100, 210, 255, 0.1);
+
+        --red: #ff5f57;
+        --yellow: #febc2e;
+
+        --text: rgba(235, 235, 240, 0.82);
+        --text-dim: rgba(235, 235, 240, 0.38);
+        --text-hi: #f2f2f7;
+
+        --font-mono: "JetBrains Mono", "SF Mono", monospace;
+        --font-disp: "Clash Display", "JetBrains Mono", monospace;
+        --radius: 8px;
+      }
+
+      /* ── RESET ──────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-mono);
+        font-size: 14px;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      ::selection {
+        background: rgba(40, 200, 64, 0.25);
+      }
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+      }
+
+      /* ── NOISE OVERLAY ──────────────────────────────────── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+        opacity: 0.4;
+      }
+
+      /* ── GRID ───────────────────────────────────────────── */
+      .grid-lines {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(40, 200, 64, 0.022) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(40, 200, 64, 0.022) 1px, transparent 1px);
+        background-size: 52px 52px;
+      }
+
+      /* ── WRAPPER ────────────────────────────────────────── */
+      .wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 0 28px;
+      }
+
+      /* ── NAV ────────────────────────────────────────────── */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid var(--border);
+        background: rgba(17, 17, 17, 0.88);
+        backdrop-filter: blur(16px);
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+      }
+      .nav-logo {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 0.9rem;
+        letter-spacing: 0.12em;
+        color: var(--green);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-shadow: var(--green-glow);
+      }
+      .nav-logo-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: var(--green-glow);
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.4);
+          opacity: 0.6;
+        }
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        list-style: none;
+      }
+      .nav-links a {
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        color: var(--text-dim);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--text-hi);
+      }
+      .nav-cta {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: #000;
+        background: var(--green);
+        border: none;
+        border-radius: 5px;
+        padding: 7px 18px;
+        cursor: pointer;
+        text-decoration: none;
+        transition:
+          filter 0.2s,
+          transform 0.1s;
+        box-shadow: var(--green-glow);
+      }
+      .nav-cta:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+      }
+
+      /* ── HERO ───────────────────────────────────────────── */
+      .hero {
+        padding: 100px 0 80px;
+        text-align: center;
+        position: relative;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(
+          circle,
+          rgba(40, 200, 64, 0.07) 0%,
+          transparent 60%
+        );
+        pointer-events: none;
+      }
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--green);
+        border: 1px solid rgba(40, 200, 64, 0.3);
+        border-radius: 20px;
+        padding: 5px 14px;
+        margin-bottom: 28px;
+        animation: fade-up 0.6s ease both;
+      }
+      .hero-eyebrow-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--green);
+        flex-shrink: 0;
+      }
+      .hero-title {
+        font-family: var(--font-disp);
+        font-size: clamp(2.8rem, 6vw, 5.2rem);
+        font-weight: 700;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        color: var(--text-hi);
+        margin-bottom: 10px;
+        animation: fade-up 0.6s 0.1s ease both;
+      }
+      .hero-title .accent {
+        color: var(--green);
+        text-shadow: var(--green-glow);
+      }
+      .hero-title .dim {
+        color: var(--text-dim);
+      }
+      .hero-sub {
+        font-size: 0.88rem;
+        font-weight: 400;
+        color: var(--text-dim);
+        line-height: 1.8;
+        max-width: 520px;
+        margin: 0 auto 40px;
+        animation: fade-up 0.6s 0.2s ease both;
+      }
+      .hero-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        animation: fade-up 0.6s 0.3s ease both;
+      }
+      .btn-primary {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: #000;
+        background: var(--green);
+        border: none;
+        border-radius: 6px;
+        padding: 12px 28px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition:
+          filter 0.2s,
+          transform 0.1s;
+        box-shadow: var(--green-glow);
+      }
+      .btn-primary:hover {
+        filter: brightness(1.1);
+        transform: translateY(-2px);
+      }
+      .btn-ghost {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        color: var(--text-dim);
+        background: transparent;
+        border: 1px solid var(--border-hi);
+        border-radius: 6px;
+        padding: 12px 24px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition:
+          border-color 0.2s,
+          color 0.2s,
+          background 0.2s;
+      }
+      .btn-ghost:hover {
+        border-color: rgba(255, 255, 255, 0.25);
+        color: var(--text-hi);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      /* terminal preview mockup */
+      .hero-terminal {
+        margin: 64px auto 0;
+        max-width: 700px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--border-hi);
+        box-shadow:
+          0 0 0 1px rgba(0, 0, 0, 0.4),
+          0 32px 80px rgba(0, 0, 0, 0.6),
+          var(--green-glow);
+        animation: fade-up 0.6s 0.4s ease both;
+      }
+      .term-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        background: #2d2d2d;
+        border-bottom: 1px solid var(--border);
+      }
+      .term-tl {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .term-title {
+        margin: 0 auto;
+        font-size: 0.68rem;
+        color: rgba(255, 255, 255, 0.3);
+        letter-spacing: 0.04em;
+      }
+      .term-body-mock {
+        background: #1a1a1a;
+        padding: 20px 22px;
+        text-align: left;
+        font-size: 0.78rem;
+        line-height: 1.9;
+      }
+      .tm-line {
+        display: block;
+      }
+      .tm-prompt {
+        color: var(--green);
+      }
+      .tm-cmd {
+        color: #f2f2f7;
+      }
+      .tm-flag {
+        color: #bf5af2;
+      }
+      .tm-str {
+        color: var(--yellow);
+      }
+      .tm-out {
+        color: var(--cyan);
+      }
+      .tm-dim {
+        color: rgba(255, 255, 255, 0.25);
+      }
+      .tm-success {
+        color: var(--green);
+      }
+      .tm-error {
+        color: var(--red);
+      }
+      .tm-cursor {
+        display: inline-block;
+        width: 8px;
+        height: 14px;
+        background: var(--green);
+        vertical-align: middle;
+        margin-left: 2px;
+        animation: blink 1s step-end infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── SECTION SHARED ─────────────────────────────────── */
+      section {
+        padding: 80px 0;
+      }
+      .section-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--green);
+        margin-bottom: 16px;
+      }
+      .section-label::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+      .section-heading {
+        font-family: var(--font-disp);
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-hi);
+        line-height: 1.15;
+        margin-bottom: 14px;
+      }
+      .section-sub {
+        font-size: 0.84rem;
+        color: var(--text-dim);
+        line-height: 1.8;
+        max-width: 560px;
+      }
+
+      /* ── STATS BAR ──────────────────────────────────────── */
+      .stats-bar {
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 32px 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+      }
+      .stat-item {
+        text-align: center;
+        padding: 8px 20px;
+        border-right: 1px solid var(--border);
+      }
+      .stat-item:last-child {
+        border-right: none;
+      }
+      .stat-num {
+        font-family: var(--font-disp);
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-hi);
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+      .stat-num span {
+        color: var(--green);
+      }
+      .stat-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+      }
+
+      /* ── WHAT IS IT ─────────────────────────────────────── */
+      .what-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: center;
+      }
+      .what-code-block {
+        background: var(--surface);
+        border: 1px solid var(--border-hi);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+      }
+      .code-block-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 14px;
+        background: #2a2a2a;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.65rem;
+        color: var(--text-dim);
+        letter-spacing: 0.06em;
+      }
+      .code-block-bar-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+      }
+      .code-block-body {
+        padding: 18px 20px;
+        font-size: 0.78rem;
+        line-height: 1.85;
+      }
+      .ck-tag {
+        color: #ff7b72;
+      }
+      .ck-attr {
+        color: #79c0ff;
+      }
+      .ck-val {
+        color: var(--yellow);
+      }
+      .ck-cls-chai {
+        color: var(--cyan);
+        font-weight: 600;
+      }
+      .ck-cls-std {
+        color: var(--text-dim);
+      }
+      .ck-comment {
+        color: rgba(255, 255, 255, 0.25);
+        font-style: italic;
+      }
+      .ck-arrow {
+        color: var(--green);
+        font-weight: 700;
+      }
+
+      /* ── WHY ────────────────────────────────────────────── */
+      .why-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 48px;
+      }
+      .why-card {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px 22px;
+        transition:
+          border-color 0.2s,
+          transform 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+      .why-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--green),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .why-card:hover {
+        border-color: var(--border-hi);
+        transform: translateY(-3px);
+      }
+      .why-card:hover::before {
+        opacity: 1;
+      }
+      .why-icon {
+        width: 36px;
+        height: 36px;
+        background: var(--green-dim);
+        border: 1px solid rgba(40, 200, 64, 0.25);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        margin-bottom: 14px;
+      }
+      .why-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: var(--text-hi);
+        margin-bottom: 8px;
+      }
+      .why-desc {
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        line-height: 1.7;
+      }
+
+      /* ── HOW IT WORKS ───────────────────────────────────── */
+      .how-steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        margin-top: 48px;
+        position: relative;
+      }
+      .how-steps::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: calc(100% / 6);
+        width: calc(100% - 100% / 3);
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          var(--green),
+          rgba(40, 200, 64, 0.2),
+          var(--green)
+        );
+      }
+      .how-step {
+        text-align: center;
+        padding: 0 24px;
+        position: relative;
+      }
+      .how-step-num {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--bg2);
+        border: 1px solid var(--green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--green);
+        margin: 0 auto 16px;
+        box-shadow: var(--green-glow);
+        position: relative;
+        z-index: 1;
+      }
+      .how-step-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--text-hi);
+        margin-bottom: 8px;
+        letter-spacing: 0.04em;
+      }
+      .how-step-desc {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        line-height: 1.7;
+      }
+
+      /* ── FEATURES ───────────────────────────────────────── */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 48px;
+      }
+      .feature-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px 20px;
+        transition: border-color 0.2s;
+      }
+      .feature-row:hover {
+        border-color: var(--border-hi);
+      }
+      .feature-icon {
+        color: var(--green);
+        font-size: 1rem;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      .feature-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-hi);
+        margin-bottom: 4px;
+        letter-spacing: 0.03em;
+      }
+      .feature-desc {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        line-height: 1.65;
+      }
+
+      /* ── SYNTAX TABLE ───────────────────────────────────── */
+      .syntax-section {
+        padding: 80px 0;
+      }
+      .syntax-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 36px;
+        font-size: 0.75rem;
+      }
+      .syntax-table thead tr {
+        border-bottom: 1px solid var(--border-hi);
+      }
+      .syntax-table th {
+        text-align: left;
+        padding: 10px 16px;
+        font-size: 0.65rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        font-weight: 600;
+      }
+      .syntax-table tbody tr {
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+      }
+      .syntax-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .syntax-table td {
+        padding: 10px 16px;
+      }
+      .td-class {
+        color: var(--cyan);
+        font-weight: 600;
+      }
+      .td-prop {
+        color: var(--text-dim);
+      }
+      .td-val {
+        color: var(--yellow);
+      }
+      .td-cat {
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 2px 8px;
+        border-radius: 3px;
+        background: rgba(40, 200, 64, 0.1);
+        color: var(--green);
+        border: 1px solid rgba(40, 200, 64, 0.2);
+        display: inline-block;
+      }
+
+      /* ── CTA ────────────────────────────────────────────── */
+      .cta-section {
+        padding: 100px 0;
+        text-align: center;
+        position: relative;
+      }
+      .cta-section::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+        height: 400px;
+        background: radial-gradient(
+          ellipse,
+          rgba(40, 200, 64, 0.08) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .cta-title {
+        font-family: var(--font-disp);
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-hi);
+        margin-bottom: 16px;
+        line-height: 1.1;
+      }
+      .cta-title .accent {
+        color: var(--green);
+        text-shadow: var(--green-glow);
+      }
+      .cta-sub {
+        font-size: 0.84rem;
+        color: var(--text-dim);
+        margin-bottom: 36px;
+        line-height: 1.8;
+      }
+      .cta-box {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        background: var(--bg2);
+        border: 1px solid var(--border-hi);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      }
+      .cta-box-prompt {
+        padding: 13px 16px;
+        font-size: 0.78rem;
+        color: var(--green);
+        border-right: 1px solid var(--border);
+        user-select: none;
+      }
+      .cta-box-cmd {
+        padding: 13px 20px;
+        font-size: 0.78rem;
+        color: var(--text-hi);
+        letter-spacing: 0.04em;
+        user-select: all;
+      }
+      .cta-box-copy {
+        padding: 13px 16px;
+        background: transparent;
+        border: none;
+        border-left: 1px solid var(--border);
+        color: var(--text-dim);
+        cursor: pointer;
+        font-size: 0.75rem;
+        font-family: var(--font-mono);
+        transition:
+          color 0.2s,
+          background 0.2s;
+      }
+      .cta-box-copy:hover {
+        color: var(--green);
+        background: rgba(40, 200, 64, 0.06);
+      }
+
+      /* ── FOOTER ─────────────────────────────────────────── */
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 32px 0 28px;
+      }
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .footer-logo {
+        font-weight: 700;
+        font-size: 0.82rem;
+        letter-spacing: 0.12em;
+        color: var(--green);
+        text-shadow: var(--green-glow);
+      }
+      .footer-links {
+        display: flex;
+        gap: 20px;
+        list-style: none;
+      }
+      .footer-links a {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        text-decoration: none;
+        letter-spacing: 0.06em;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--text-hi);
+      }
+      .footer-copy {
+        font-size: 0.65rem;
+        color: var(--text-dim);
+        letter-spacing: 0.06em;
+        width: 100%;
+        text-align: center;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        margin-top: 8px;
+      }
+      .footer-copy span {
+        color: var(--green);
+      }
+
+      /* ── RESPONSIVE ─────────────────────────────────────── */
+      @media (max-width: 860px) {
+        .what-grid,
+        .why-grid,
+        .how-steps,
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+        .stats-bar {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .stat-item:nth-child(2) {
+          border-right: none;
+        }
+        .how-steps::before {
+          display: none;
+        }
+        nav .nav-links {
+          display: none;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="app-window">
-      <!-- ══════════ TITLEBAR ══════════ -->
-      <div class="titlebar">
-        <div class="traffic-lights">
-          <div class="tl tl-red"></div>
-          <div class="tl tl-yellow"></div>
-          <div class="tl tl-green"></div>
-        </div>
+    <div class="grid-lines"></div>
 
-        <div class="titlebar-title">chai-css — zsh — 180×48</div>
-
-        <div class="titlebar-right">
-          <div class="theme-pill">
-            <button class="theme-pill-btn" id="btn-light">Light</button>
-            <button class="theme-pill-btn active" id="btn-dark">Dark</button>
-          </div>
+    <!-- ═══════════════════════════════ NAV -->
+    <nav>
+      <div class="wrap">
+        <div class="nav-inner">
+          <a href="#" class="nav-logo">
+            <div class="nav-logo-dot"></div>
+            chai-css
+          </a>
+          <ul class="nav-links">
+            <li><a href="#what">What</a></li>
+            <li><a href="#why">Why</a></li>
+            <li><a href="#how">How</a></li>
+            <li><a href="#syntax">Syntax</a></li>
+            <li>
+              <a href="#" style="color: rgba(255, 255, 255, 0.5)">GitHub ↗</a>
+            </li>
+          </ul>
+          <a href="app.html" class="nav-cta">▶ Open Playground</a>
         </div>
       </div>
+    </nav>
 
-      <!-- ══════════ TERMINAL BODY ══════════ -->
-      <div class="term-body">
-        <!-- 01 INPUT ZONE -->
-        <div class="prompt-line">
-          <span class="p-user">chai</span><span class="p-at">@</span
-          ><span class="p-host">macbook</span><span class="p-sep"> </span
-          ><span class="p-path">~/project</span><span class="p-sep"> </span
-          ><span class="p-dollar">$</span>
-          <span class="p-cmd">open</span>
-          <span class="p-flag">--input</span>
-          <span class="p-arg">"html"</span>
-          <span class="p-arg">"css"</span>
-          <span class="p-comment">## section 01 — input zone</span>
+    <!-- ═══════════════════════════════ HERO -->
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-eyebrow">
+          <div class="hero-eyebrow-dot"></div>
+          utility-first · terminal-native · zero conflicts
         </div>
 
-        <div class="input-zone">
-          <div class="panel input-html">
-            <div class="panel-bar">
-              <div
-                class="panel-bar-dot"
-                style="background: var(--c-path)"
-              ></div>
-              <span class="panel-bar-title"
-                >INPUT HTML FILE (WRITE / UPLOAD)</span
-              >
-              <span class="panel-bar-tag">HTML</span>
-            </div>
-            <div class="textarea-wrap">
-              <textarea
-                id="html-input"
-                class="code-textarea"
-                spellcheck="false"
-                placeholder="<!-- Write or paste your HTML here -->"
-              ></textarea>
-            </div>
-            <div class="upload-bar">
-              <input type="file" id="file-upload" accept=".html,.htm" />
-              <button
-                class="upload-btn"
-                onclick="document.getElementById('file-upload').click()"
-              >
-                <svg
-                  width="11"
-                  height="11"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-                  <polyline points="17 8 12 3 7 8" />
-                  <line x1="12" y1="3" x2="12" y2="15" />
-                </svg>
-                UPLOAD .HTML
-              </button>
-              <span class="upload-hint">no file selected(coming soon!)</span>
-            </div>
-          </div>
+        <h1 class="hero-title">
+          Write HTML.<br />
+          <span class="accent">Chai</span> does the
+          <span class="dim">CSS.</span>
+        </h1>
 
-          <div class="panel input-css">
-            <div class="panel-bar">
-              <div
-                class="panel-bar-dot"
-                style="background: var(--c-keyword)"
-              ></div>
-              <span class="panel-bar-title">INPUT TO ADD MORE CSS</span>
-              <span class="panel-bar-tag">CSS</span>
-            </div>
-            <textarea
-              id="input-css"
-              class="code-textarea"
-              spellcheck="false"
-              placeholder="/* Add custom CSS overrides here (coming soon!) */"
-            ></textarea>
-          </div>
-        </div>
+        <p class="hero-sub">
+          A utility-first CSS framework that lives in your terminal workflow.
+          Add <code style="color: var(--cyan)">chai-</code> classes to any HTML
+          element and watch styles apply instantly — no config, no build step,
+          no friction.
+        </p>
 
-        <!-- 02 ERROR BAR -->
-        <div class="error-section">
-          <div class="prompt-line">
-            <span class="p-dollar" style="color: var(--c-error)">!</span>
-            <span class="p-cmd" style="color: var(--c-error)">stderr</span>
-            <span class="p-comment">## section — feedback</span>
-          </div>
-
-          <div class="error-bar">
-            <span class="error-prefix">ERROR:</span>
-            <span class="error-msg">
-              CSS does not match expected pattern for
-              <span class="error-code">'chai-p-5'</span>
-              — unexpected token at line 12, col 4. Expected value, got
-              identifier.
-            </span>
-          </div>
-        </div>
-
-        <!-- 03 LOG CONSOLE -->
-        <div class="prompt-line">
-          <span class="p-user">chai</span><span class="p-at">@</span
-          ><span class="p-host">macbook</span><span class="p-sep"> </span
-          ><span class="p-path">~/project</span><span class="p-sep"> </span
-          ><span class="p-dollar">$</span>
-          <span class="p-cmd">chai</span>
-          <span class="p-flag">--log</span>
-          <span class="p-arg">"applied"</span>
-          <span class="p-arg">"failed"</span>
-          <span class="p-comment">## section 02 — log console</span>
-        </div>
-
-        <div class="log-zone">
-          <!-- Applied styles -->
-          <div class="panel log-success">
-            <div class="panel-bar">
-              <div
-                class="panel-bar-dot"
-                style="background: var(--c-success)"
-              ></div>
-              <span class="panel-bar-title">APPLIED STYLES</span>
-              <span
-                class="panel-bar-tag"
-                style="color: var(--c-success)"
-                id="applied-count"
-                >✓ 0</span
-              >
-            </div>
-            <div class="log-body" id="applied-list"></div>
-          </div>
-
-          <!-- Failed styles -->
-          <div class="panel log-failed">
-            <div class="panel-bar">
-              <div
-                class="panel-bar-dot"
-                style="background: var(--c-error)"
-              ></div>
-              <span class="panel-bar-title">FAILED TO APPLY</span>
-              <span
-                class="panel-bar-tag"
-                style="color: var(--c-error)"
-                id="failed-count"
-                >✗ 0</span
-              >
-            </div>
-            <div class="log-body" id="failed-list"></div>
-          </div>
-        </div>
-
-        <!-- 04 ACTION ROW -->
-        <div class="prompt-line">
-          <span class="p-user">chai</span><span class="p-at">@</span
-          ><span class="p-host">macbook</span><span class="p-sep"> </span
-          ><span class="p-path">~/project</span><span class="p-sep"> </span
-          ><span class="p-dollar">$</span>
-          <span class="p-cmd">chai</span>
-          <span class="p-flag">run</span>
-          <span class="p-comment">## section 03 — actions</span>
-        </div>
-
-        <div class="action-row">
-          <button class="btn-secondary" id="reset-button">⟳ reset</button>
-          <div class="toggle-wrap">
-            <input type="checkbox" id="autorun-toggle" class="toggle-input" />
-            <label for="autorun-toggle" class="toggle-track"></label>
-            <span class="toggle-label-text" id="autorun-label"
-              >auto-run: off(coming soon!)</span
+        <div class="hero-actions">
+          <a href="app.html" class="btn-primary">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             >
-          </div>
-          <button class="btn-run" id="run-script-btn">▶ run script</button>
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            Get Started
+          </a>
+          <a href="#" class="btn-ghost">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+              />
+            </svg>
+            View on GitHub
+          </a>
         </div>
 
-        <!-- 05 LIVE PREVIEW -->
-        <div class="prompt-line">
-          <span class="p-user">chai</span><span class="p-at">@</span
-          ><span class="p-host">macbook</span><span class="p-sep"> </span
-          ><span class="p-path">~/project</span><span class="p-sep"> </span
-          ><span class="p-dollar">$</span>
-          <span class="p-cmd">open</span>
-          <span class="p-flag">--preview</span>
-          <span class="p-arg">"live"</span>
-          <span class="p-comment">## section 04 — live preview</span>
-        </div>
-
-        <div class="panel live-preview">
-          <div class="panel-bar">
-            <div
-              class="panel-bar-dot"
-              style="background: var(--dot-green)"
-            ></div>
-            <span class="panel-bar-title">LIVE DEMO OF THE WEBSITE</span>
-            <div class="live-indicator">
-              <div class="live-dot"></div>
-              LIVE
-            </div>
+        <!-- terminal mockup -->
+        <div class="hero-terminal">
+          <div class="term-bar">
+            <div class="term-tl" style="background: #ff5f57"></div>
+            <div class="term-tl" style="background: #febc2e"></div>
+            <div class="term-tl" style="background: #28c840"></div>
+            <span class="term-title">chai-css — zsh — 120×32</span>
           </div>
-          <div id="live-body">
-            <div class="live-empty-icon">⌗</div>
-            <div class="live-empty-text">
-              write or upload html above<br />then hit ▶ run script to preview
-            </div>
+          <div class="term-body-mock">
+            <span class="tm-line"
+              ><span class="tm-prompt">chai@macbook</span>
+              <span class="tm-dim">~/project</span>
+              <span class="tm-prompt">$</span> <span class="tm-cmd">chai</span>
+              <span class="tm-flag">run</span>
+              <span class="tm-str">index.html</span></span
+            >
+            <span class="tm-line tm-dim">&nbsp;</span>
+            <span class="tm-line"
+              ><span class="tm-out"> Parsing HTML...</span></span
+            >
+            <span class="tm-line"
+              ><span class="tm-out">
+                Found 3 elements with chai- classes</span
+              ></span
+            >
+            <span class="tm-line tm-dim">&nbsp;</span>
+            <span class="tm-line"
+              ><span class="tm-success">
+                ✓ chai-bg-red → background-color: red</span
+              ></span
+            >
+            <span class="tm-line"
+              ><span class="tm-success"> ✓ chai-p-4 → padding: 4px</span></span
+            >
+            <span class="tm-line"
+              ><span class="tm-success">
+                ✓ chai-t-white → color: white</span
+              ></span
+            >
+            <span class="tm-line"
+              ><span class="tm-error">
+                ✗ chai-p-5 → invalid shorthand value</span
+              ></span
+            >
+            <span class="tm-line tm-dim">&nbsp;</span>
+            <span class="tm-line"
+              ><span class="tm-success">
+                Applied: 3 &nbsp; Failed: 1</span
+              ></span
+            >
+            <span class="tm-line"
+              ><span class="tm-prompt">chai@macbook</span>
+              <span class="tm-dim">~/project</span>
+              <span class="tm-prompt">$</span> <span class="tm-cursor"></span
+            ></span>
           </div>
         </div>
       </div>
-      <!-- /term-body -->
+    </section>
 
-      <!-- ══════════ FOOTER ══════════ -->
-      <div class="term-footer">
-        <a class="social-btn" href="#">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.265 5.634 5.9-5.634zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-            /></svg
-          >X
-        </a>
-        <a class="social-btn" href="#">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"
-            />
-            <circle cx="4" cy="4" r="2" /></svg
-          >LinkedIn
-        </a>
-        <a class="social-btn" href="#">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"
-            /></svg
-          >Resume
-        </a>
-        <a class="social-btn" href="#">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
-            /></svg
-          >Git
-        </a>
-        <a class="social-btn" href="#">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"
-            /></svg
-          >YT
-        </a>
-        <div class="footer-copy">
-          © 2025 <span>chai-css</span> — utility-first · zero conflicts · open
-          source
+    <!-- ═══════════════════════════════ STATS -->
+    <div class="wrap">
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-num"><span>0</span> config</div>
+          <div class="stat-label">files needed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><span>chai-</span></div>
+          <div class="stat-label">one prefix, all styles</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><span>∞</span></div>
+          <div class="stat-label">composable classes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><span>0</span>ms</div>
+          <div class="stat-label">build time</div>
         </div>
       </div>
     </div>
-    <!-- /app-window -->
 
-    <script src="main.js" type="module"></script>
+    <!-- ═══════════════════════════════ WHAT IS IT -->
+    <section id="what">
+      <div class="wrap">
+        <div class="what-grid">
+          <div>
+            <div class="section-label">// 01 &nbsp; what is chai-css</div>
+            <h2 class="section-heading">
+              CSS utilities,<br />the terminal way.
+            </h2>
+            <p class="section-sub" style="margin-bottom: 20px">
+              Chai CSS is a utility-first styling engine that reads your HTML,
+              detects
+              <code style="color: var(--cyan)">chai-</code> prefixed classes,
+              and applies the corresponding CSS properties directly to your
+              elements — live, in the browser.
+            </p>
+            <p class="section-sub">
+              Think Tailwind, but instead of a build pipeline you get a live
+              playground with a terminal UI, an applied-styles log, an error
+              reporter, and a live preview iframe — all in one file.
+            </p>
+          </div>
+
+          <div class="what-code-block">
+            <div class="code-block-bar">
+              <div class="code-block-bar-dot" style="background: #ff5f57"></div>
+              <div class="code-block-bar-dot" style="background: #febc2e"></div>
+              <div class="code-block-bar-dot" style="background: #28c840"></div>
+              <span style="margin-left: 8px">index.html</span>
+            </div>
+            <div class="code-block-body">
+              <span style="display: block"
+                ><span class="ck-comment"
+                  >&lt;!-- before chai --&gt;</span
+                ></span
+              >
+              <span style="display: block"
+                ><span class="ck-tag">&lt;h1</span>
+                <span class="ck-attr">style</span>=<span class="ck-val"
+                  >"padding:2rem;color:red"</span
+                ><span class="ck-tag">&gt;</span></span
+              >
+              <span style="display: block">&nbsp;&nbsp;Hello</span>
+              <span style="display: block"
+                ><span class="ck-tag">&lt;/h1&gt;</span></span
+              >
+              <span style="display: block">&nbsp;</span>
+              <span style="display: block"
+                ><span class="ck-comment">&lt;!-- after chai --&gt;</span></span
+              >
+              <span style="display: block"
+                ><span class="ck-tag">&lt;h1</span>
+                <span class="ck-attr">class</span>=<span class="ck-val">"</span
+                ><span class="ck-cls-chai">chai-p-8 chai-t-red</span
+                ><span class="ck-val">"</span
+                ><span class="ck-tag">&gt;</span></span
+              >
+              <span style="display: block">&nbsp;&nbsp;Hello</span>
+              <span style="display: block"
+                ><span class="ck-tag">&lt;/h1&gt;</span></span
+              >
+              <span style="display: block">&nbsp;</span>
+              <span style="display: block"
+                ><span class="ck-comment"
+                  >&lt;!-- chai resolves: --&gt;</span
+                ></span
+              >
+              <span style="display: block"
+                ><span class="ck-arrow">✓</span>
+                <span class="ck-cls-std">padding</span>
+                <span class="ck-arrow">→</span>
+                <span class="ck-val">8px</span></span
+              >
+              <span style="display: block"
+                ><span class="ck-arrow">✓</span>
+                <span class="ck-cls-std">color</span>
+                <span class="ck-arrow">→</span>
+                <span class="ck-val">red</span></span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ WHY -->
+    <section
+      id="why"
+      style="
+        background: var(--bg2);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      "
+    >
+      <div class="wrap">
+        <div class="section-label">// 02 &nbsp; why chai-css</div>
+        <h2 class="section-heading">No setup. No surprises.</h2>
+        <p class="section-sub">
+          Built for developers who want to prototype fast, inspect styles live,
+          and never fight a build tool again.
+        </p>
+
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon">⚡</div>
+            <div class="why-title">Zero Config</div>
+            <div class="why-desc">
+              No webpack, no PostCSS, no tailwind.config.js. Paste your HTML,
+              run the script, done.
+            </div>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">🔍</div>
+            <div class="why-title">Live Inspector</div>
+            <div class="why-desc">
+              Every applied class shows up in the APPLIED STYLES panel with an
+              eye toggle and a remove button — inspect and tweak without
+              touching code.
+            </div>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">🛑</div>
+            <div class="why-title">Error Reporter</div>
+            <div class="why-desc">
+              When a class doesn't map to anything valid, Chai tells you exactly
+              what went wrong and why — no silent failures.
+            </div>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">🎯</div>
+            <div class="why-title">Conflict-Free</div>
+            <div class="why-desc">
+              The <code style="color: var(--cyan)">chai-</code> prefix
+              namespaces every class so it never collides with Bootstrap,
+              Tailwind, or your own CSS.
+            </div>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">👁</div>
+            <div class="why-title">Live Preview</div>
+            <div class="why-desc">
+              Your HTML renders in an iframe the moment you hit Run Script.
+              Toggle styles on/off and watch the preview update in real time.
+            </div>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">🖥</div>
+            <div class="why-title">Terminal Native</div>
+            <div class="why-desc">
+              The entire UI is styled as a macOS terminal window. If you live in
+              the CLI, you'll feel right at home.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ HOW -->
+    <section id="how">
+      <div class="wrap">
+        <div class="section-label">// 03 &nbsp; how it works</div>
+        <h2 class="section-heading">Three steps to styled.</h2>
+        <p class="section-sub">
+          Chai reads your markup, maps utility classes to CSS properties, and
+          injects the styles — all in the browser, no server required.
+        </p>
+
+        <div class="how-steps">
+          <div class="how-step">
+            <div class="how-step-num">01</div>
+            <div class="how-step-title">Write HTML</div>
+            <div class="how-step-desc">
+              Add
+              <code style="color: var(--cyan)">chai-{property}-{value}</code>
+              classes to any element in the HTML input panel or upload a file.
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">02</div>
+            <div class="how-step-title">Hit Run Script</div>
+            <div class="how-step-desc">
+              Chai parses every element, looks up each class in its database,
+              validates the value, and applies the CSS property inline.
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">03</div>
+            <div class="how-step-title">Inspect & Tweak</div>
+            <div class="how-step-desc">
+              Applied styles appear in the log with eye and remove controls.
+              Errors surface in the failed panel with a reason. Preview updates
+              live.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ FEATURES -->
+    <section
+      style="
+        background: var(--bg2);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      "
+    >
+      <div class="wrap">
+        <div class="section-label">// 04 &nbsp; features</div>
+        <h2 class="section-heading">
+          Everything you need.<br />Nothing you don't.
+        </h2>
+
+        <div class="features-grid">
+          <div class="feature-row">
+            <div class="feature-icon">▶</div>
+            <div>
+              <div class="feature-title">Run Script</div>
+              <div class="feature-desc">
+                Parse and apply all chai- classes from your HTML in one click.
+                Shows applied count and failed count instantly.
+              </div>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon">⟳</div>
+            <div>
+              <div class="feature-title">Reset</div>
+              <div class="feature-desc">
+                Clear both input panels, wipe the preview, and reset all
+                counters back to zero.
+              </div>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon">👁</div>
+            <div>
+              <div class="feature-title">Eye Toggle per Rule</div>
+              <div class="feature-desc">
+                Hide and show individual applied styles without removing the
+                class. Useful for comparing before/after visually.
+              </div>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon">✕</div>
+            <div>
+              <div class="feature-title">Remove Rule</div>
+              <div class="feature-desc">
+                Delete a style from the applied list and strip the CSS property
+                from the element inline — slides out with animation.
+              </div>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon">⬆</div>
+            <div>
+              <div class="feature-title">Upload HTML File</div>
+              <div class="feature-desc">
+                Upload a .html file directly from your filesystem. Chai reads it
+                as text and populates the input panel automatically.
+              </div>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon">🌗</div>
+            <div>
+              <div class="feature-title">Dark / Light Mode</div>
+              <div class="feature-desc">
+                Toggle between the classic dark terminal theme and a macOS
+                "Basic" light theme from the titlebar pill.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ SYNTAX -->
+    <section id="syntax" class="syntax-section">
+      <div class="wrap">
+        <div class="section-label">// 05 &nbsp; class syntax</div>
+        <h2 class="section-heading">chai-{key}-{value}</h2>
+        <p class="section-sub">
+          Every class follows the same pattern. The key maps to one or more CSS
+          properties. The value is applied as-is for visuals, or converted to px
+          for spacing and layout.
+        </p>
+
+        <table class="syntax-table">
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>CSS Property</th>
+              <th>Resolved Value</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-class">chai-p-8</td>
+              <td class="td-prop">padding</td>
+              <td class="td-val">8px</td>
+              <td><span class="td-cat">spacing</span></td>
+            </tr>
+            <tr>
+              <td class="td-class">chai-bg-red</td>
+              <td class="td-prop">background-color</td>
+              <td class="td-val">red</td>
+              <td><span class="td-cat">visuals</span></td>
+            </tr>
+            <tr>
+              <td class="td-class">chai-t-white</td>
+              <td class="td-prop">color</td>
+              <td class="td-val">white</td>
+              <td><span class="td-cat">visuals</span></td>
+            </tr>
+            <tr>
+              <td class="td-class">chai-br-4</td>
+              <td class="td-prop">border-radius</td>
+              <td class="td-val">4px</td>
+              <td><span class="td-cat">visuals</span></td>
+            </tr>
+            <tr>
+              <td class="td-class">chai-flex</td>
+              <td class="td-prop">display</td>
+              <td class="td-val">flex</td>
+              <td><span class="td-cat">layout</span></td>
+            </tr>
+            <tr>
+              <td class="td-class">chai-o-50</td>
+              <td class="td-prop">opacity</td>
+              <td class="td-val">50</td>
+              <td><span class="td-cat">visuals</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ CTA -->
+    <section class="cta-section" style="border-top: 1px solid var(--border)">
+      <div class="wrap">
+        <h2 class="cta-title">
+          Ready to brew some <span class="accent">styles?</span>
+        </h2>
+        <p class="cta-sub">
+          Open the playground, paste your HTML, and run your first script in
+          under 30 seconds.
+        </p>
+
+        <div>
+          <div class="cta-box">
+            <span class="cta-box-prompt">$</span>
+            <span class="cta-box-cmd">open index.html</span>
+            <button
+              class="cta-box-copy"
+              onclick="
+                navigator.clipboard.writeText('open index.html').then(() => {
+                  this.textContent = 'copied!';
+                  setTimeout(() => (this.textContent = 'copy'), 1500);
+                })
+              "
+            >
+              copy
+            </button>
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-top: 28px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+          "
+        >
+          <a href="app.html" class="btn-primary">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            Open Playground
+          </a>
+          <a href="#" class="btn-ghost">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+              />
+            </svg>
+            Star on GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ FOOTER -->
+    <footer>
+      <div class="wrap">
+        <div class="footer-inner">
+          <div class="footer-logo">chai-css</div>
+          <ul class="footer-links">
+            <li><a href="#what">Docs</a></li>
+            <li><a href="#syntax">Syntax</a></li>
+            <li><a href="index.html">Playground</a></li>
+            <li><a href="#">GitHub</a></li>
+          </ul>
+        </div>
+        <div class="footer-copy">
+          © 2025 <span>chai-css</span> — utility-first · terminal-native · open
+          source · built with ☕
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

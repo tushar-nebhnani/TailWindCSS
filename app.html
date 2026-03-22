@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHAI CSS — Developer Portfolio</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=Orbitron:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-window">
+      <!-- ══════════ TITLEBAR ══════════ -->
+
+      <div class="titlebar">
+        <div class="traffic-lights">
+          <div class="tl tl-red"></div>
+          <div class="tl tl-yellow"></div>
+          <div class="tl tl-green"></div>
+        </div>
+        <a
+          href="index.html"
+          style="
+            font-family: &quot;JetBrains Mono&quot;, monospace;
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            margin-left: 12px;
+            letter-spacing: 0.06em;
+            transition: color 0.2s;
+            padding-left: 3px;
+          "
+          onmouseover="this.style.color = 'rgba(255,255,255,.7)'"
+          onmouseout="this.style.color = 'rgba(255,255,255,.3)'"
+        >
+          ← landing
+        </a>
+
+        <div class="titlebar-title">chai-css — zsh — 180×48</div>
+
+        <div class="titlebar-right">
+          <div class="theme-pill">
+            <button class="theme-pill-btn" id="btn-light">Light</button>
+            <button class="theme-pill-btn active" id="btn-dark">Dark</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ TERMINAL BODY ══════════ -->
+      <div class="term-body">
+        <!-- 01 INPUT ZONE -->
+        <div class="prompt-line">
+          <span class="p-user">chai</span><span class="p-at">@</span
+          ><span class="p-host">macbook</span><span class="p-sep"> </span
+          ><span class="p-path">~/project</span><span class="p-sep"> </span
+          ><span class="p-dollar">$</span>
+          <span class="p-cmd">open</span>
+          <span class="p-flag">--input</span>
+          <span class="p-arg">"html"</span>
+          <span class="p-arg">"css"</span>
+          <span class="p-comment">## section 01 — input zone</span>
+        </div>
+
+        <div class="input-zone">
+          <div class="panel input-html">
+            <div class="panel-bar">
+              <div
+                class="panel-bar-dot"
+                style="background: var(--c-path)"
+              ></div>
+              <span class="panel-bar-title"
+                >INPUT HTML FILE (WRITE / UPLOAD)</span
+              >
+              <span class="panel-bar-tag">HTML</span>
+            </div>
+            <div class="textarea-wrap">
+              <textarea
+                id="html-input"
+                class="code-textarea"
+                spellcheck="false"
+                placeholder="<!-- Write or paste your HTML here -->"
+              ></textarea>
+            </div>
+            <div class="upload-bar">
+              <input type="file" id="file-upload" accept=".html,.htm" />
+              <button
+                class="upload-btn"
+                onclick="document.getElementById('file-upload').click()"
+              >
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                UPLOAD .HTML
+              </button>
+              <span class="upload-hint">no file selected(coming soon!)</span>
+            </div>
+          </div>
+
+          <div class="panel input-css">
+            <div class="panel-bar">
+              <div
+                class="panel-bar-dot"
+                style="background: var(--c-keyword)"
+              ></div>
+              <span class="panel-bar-title">INPUT TO ADD MORE CSS</span>
+              <span class="panel-bar-tag">CSS</span>
+            </div>
+            <textarea
+              id="input-css"
+              class="code-textarea"
+              spellcheck="false"
+              placeholder="/* Add custom CSS overrides here (coming soon!) */"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- 02 ERROR BAR -->
+        <div class="error-section">
+          <div class="prompt-line">
+            <span class="p-dollar" style="color: var(--c-error)">!</span>
+            <span class="p-cmd" style="color: var(--c-error)">stderr</span>
+            <span class="p-comment">## section — feedback</span>
+          </div>
+
+          <div class="error-bar">
+            <span class="error-prefix">ERROR:</span>
+            <span class="error-msg">
+              CSS does not match expected pattern for
+              <span class="error-code">'chai-p-5'</span>
+              — unexpected token at line 12, col 4. Expected value, got
+              identifier.
+            </span>
+          </div>
+        </div>
+
+        <!-- 03 LOG CONSOLE -->
+        <div class="prompt-line">
+          <span class="p-user">chai</span><span class="p-at">@</span
+          ><span class="p-host">macbook</span><span class="p-sep"> </span
+          ><span class="p-path">~/project</span><span class="p-sep"> </span
+          ><span class="p-dollar">$</span>
+          <span class="p-cmd">chai</span>
+          <span class="p-flag">--log</span>
+          <span class="p-arg">"applied"</span>
+          <span class="p-arg">"failed"</span>
+          <span class="p-comment">## section 02 — log console</span>
+        </div>
+
+        <div class="log-zone">
+          <!-- Applied styles -->
+          <div class="panel log-success">
+            <div class="panel-bar">
+              <div
+                class="panel-bar-dot"
+                style="background: var(--c-success)"
+              ></div>
+              <span class="panel-bar-title">APPLIED STYLES</span>
+              <span
+                class="panel-bar-tag"
+                style="color: var(--c-success)"
+                id="applied-count"
+                >✓ 0</span
+              >
+            </div>
+            <div class="log-body" id="applied-list"></div>
+          </div>
+
+          <!-- Failed styles -->
+          <div class="panel log-failed">
+            <div class="panel-bar">
+              <div
+                class="panel-bar-dot"
+                style="background: var(--c-error)"
+              ></div>
+              <span class="panel-bar-title">FAILED TO APPLY</span>
+              <span
+                class="panel-bar-tag"
+                style="color: var(--c-error)"
+                id="failed-count"
+                >✗ 0</span
+              >
+            </div>
+            <div class="log-body" id="failed-list"></div>
+          </div>
+        </div>
+
+        <!-- 04 ACTION ROW -->
+        <div class="prompt-line">
+          <span class="p-user">chai</span><span class="p-at">@</span
+          ><span class="p-host">macbook</span><span class="p-sep"> </span
+          ><span class="p-path">~/project</span><span class="p-sep"> </span
+          ><span class="p-dollar">$</span>
+          <span class="p-cmd">chai</span>
+          <span class="p-flag">run</span>
+          <span class="p-comment">## section 03 — actions</span>
+        </div>
+
+        <div class="action-row">
+          <button class="btn-secondary" id="reset-button">⟳ reset</button>
+          <div class="toggle-wrap">
+            <input type="checkbox" id="autorun-toggle" class="toggle-input" />
+            <label for="autorun-toggle" class="toggle-track"></label>
+            <span class="toggle-label-text" id="autorun-label"
+              >auto-run: off(coming soon!)</span
+            >
+          </div>
+          <button class="btn-run" id="run-script-btn">▶ run script</button>
+        </div>
+
+        <!-- 05 LIVE PREVIEW -->
+        <div class="prompt-line">
+          <span class="p-user">chai</span><span class="p-at">@</span
+          ><span class="p-host">macbook</span><span class="p-sep"> </span
+          ><span class="p-path">~/project</span><span class="p-sep"> </span
+          ><span class="p-dollar">$</span>
+          <span class="p-cmd">open</span>
+          <span class="p-flag">--preview</span>
+          <span class="p-arg">"live"</span>
+          <span class="p-comment">## section 04 — live preview</span>
+        </div>
+
+        <div class="panel live-preview">
+          <div class="panel-bar">
+            <div
+              class="panel-bar-dot"
+              style="background: var(--dot-green)"
+            ></div>
+            <span class="panel-bar-title">LIVE DEMO OF THE WEBSITE</span>
+            <div class="live-indicator">
+              <div class="live-dot"></div>
+              LIVE
+            </div>
+          </div>
+          <div id="live-body">
+            <div class="live-empty-icon">⌗</div>
+            <div class="live-empty-text">
+              write or upload html above<br />then hit ▶ run script to preview
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /term-body -->
+
+      <!-- ══════════ FOOTER ══════════ -->
+      <div class="term-footer">
+        <a class="social-btn" href="#">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.265 5.634 5.9-5.634zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+            /></svg
+          >X
+        </a>
+        <a class="social-btn" href="#">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"
+            />
+            <circle cx="4" cy="4" r="2" /></svg
+          >LinkedIn
+        </a>
+        <a class="social-btn" href="#">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"
+            /></svg
+          >Resume
+        </a>
+        <a class="social-btn" href="#">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+            /></svg
+          >Git
+        </a>
+        <a class="social-btn" href="#">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"
+            /></svg
+          >YT
+        </a>
+        <div class="footer-copy">
+          © 2025 <span>chai-css</span> — utility-first · zero conflicts · open
+          source
+        </div>
+      </div>
+    </div>
+    <!-- /app-window -->
+
+    <script src="main.js" type="module"></script>
+  </body>
+</html>

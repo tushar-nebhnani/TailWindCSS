@@ -22,6 +22,6 @@ export function showError(message) {
     errorMsg.textContent = message;
     clearTimeout(errorTimeout);
 
-    errorTimeout = setTimeout(hidesError, 5000);
+    errorTimeout = setTimeout(hidesError, 2000);
   }
 }
