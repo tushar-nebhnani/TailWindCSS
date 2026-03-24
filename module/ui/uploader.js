@@ -20,6 +20,7 @@ export function fileUpload() {
     const reader = new FileReader();
     reader.onload = function (e) {
       inputHTML.value = e.target.result;
+      spanText.style.color = "green";
       spanText.textContent = `uploaded file: ${file.name}`;
     };
 

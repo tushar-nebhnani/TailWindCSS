@@ -13,7 +13,9 @@ export function resetList() {
 export function resetInputFields() {
   const inputHTML = document.getElementById("html-input");
   const inputCSS = document.getElementById("input-css");
+  const spanText = document.getElementById("upload-details");
 
   inputCSS.value = "";
   inputHTML.value = "";
+  spanText.textContent = `no file selected`;
 }

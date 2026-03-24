@@ -63,6 +63,19 @@
           <span class="p-comment">## section 01 — input zone</span>
         </div>
 
+        <!-- KEY INPUT BAR — above both panels -->
+        <div class="key-input-bar">
+          <span class="key-input-label">⌘ PATTERN</span>
+          <input
+            type="text"
+            id="global-key-input"
+            class="key-input-field"
+            placeholder="enter custom pattern…"
+            spellcheck="false"
+          />
+          <button class="btn-pattern" id="apply-css-btn">enter</button>
+        </div>
+
         <div class="input-zone">
           <div class="panel input-html">
             <div class="panel-bar">
@@ -108,6 +121,22 @@
               <span class="upload-hint" id="upload-details"
                 >no file selected</span
               >
+              <!-- DEMO BUTTON -->
+              <button class="demo-btn" id="demo-btn">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+                DEMO
+              </button>
             </div>
           </div>
 
@@ -124,8 +153,11 @@
               id="input-css"
               class="code-textarea"
               spellcheck="false"
-              placeholder="/* Add custom CSS overrides here (coming soon!) */"
+              placeholder="/* Add custom CSS overrides here */"
             ></textarea>
+            <button class="btn-apply-css" id="apply-css-btn">
+              ⚡ apply css
+            </button>
           </div>
         </div>
 

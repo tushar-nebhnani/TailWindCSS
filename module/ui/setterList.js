@@ -79,7 +79,6 @@ export function addToAppliedList(targetElement, className, mappedKey, value) {
 
 export function addToFailedList(className, reason = "unknown error") {
   const failedList = document.getElementById("failed-list");
-  console.log("fueckd");
 
   // prevent duplicates
   const existing = failedList.querySelector(

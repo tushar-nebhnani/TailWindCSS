@@ -18,10 +18,6 @@ export function takeHTMLInput() {
 
 export function takeCSSInput() {
   const inputCSS = document.getElementById("input-css");
-  if (!inputCSS) {
-    showError("Terminal Error: css-input element not found in DOM.");
-    return null;
-  }
 
   const cssContent = inputCSS.value.trim();
 
