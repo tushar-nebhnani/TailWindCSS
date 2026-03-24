@@ -84,7 +84,7 @@
               ></textarea>
             </div>
             <div class="upload-bar">
-              <input type="file" id="file-upload" accept=".html,.htm" />
+              <input type="file" id="file-upload" />
               <button
                 class="upload-btn"
                 onclick="document.getElementById('file-upload').click()"
@@ -105,7 +105,9 @@
                 </svg>
                 UPLOAD .HTML
               </button>
-              <span class="upload-hint">no file selected(coming soon!)</span>
+              <span class="upload-hint" id="upload-details"
+                >no file selected</span
+              >
             </div>
           </div>
 
