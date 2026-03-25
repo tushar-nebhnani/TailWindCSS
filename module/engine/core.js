@@ -4,8 +4,19 @@ import { addToAppliedList, addToFailedList } from "../ui/setterList.js";
 
 export function extractDetails(container) {
   const bodyElements = container.querySelectorAll("*");
-  const pattern = "chai-";
+  const inputKey = document.getElementById("global-key-input");
+  const inputBtn = document.getElementById("add-custom-key");
+  // ***********************
+  let currentPattern = "chai-";
+  inputBtn.addEventListener("click", () => {
+    pattern = inputKey.value;
+    console.log(pattern);
+  });
 
+  if (!pattern) {
+    showError("Please enter a custom key to decode css.");
+  }
+  // ************************
   bodyElements.forEach((e) => {
     let classes = [];
     classes.push(...e.classList);

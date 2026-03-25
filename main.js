@@ -3,7 +3,7 @@ import { takeHTMLInput } from "./module/engine/input.js";
 import { validHTML } from "./module/engine/validator.js";
 import { resetInputFields, resetList } from "./module/ui/reseter.js";
 import { extractDetails } from "./module/engine/core.js";
-import { fileUpload } from "./module/ui/uploader.js";
+import { fileUpload, demoBtn } from "./module/ui/uploader.js";
 hidesError();
 
 const SVG_EYE_ON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
@@ -78,3 +78,4 @@ runBtn.addEventListener("click", () => {
 
 resetBtn.addEventListener("click", fullReset);
 fileUpload();
+demoBtn();

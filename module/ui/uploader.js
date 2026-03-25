@@ -32,3 +32,18 @@ export function fileUpload() {
   }
   uploadBtn.addEventListener("change", readFile);
 }
+
+export function demoBtn() {
+  const demoBtn = document.getElementById("demo-btn");
+  const inputHTML = document.getElementById("html-input");
+  const spanText = document.getElementById("upload-details");
+
+  const data =
+    '<!doctype html> <html lang="en"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Document</title></head><body><h1 class="chai-bg-red tushar chai-p-4">Welcome to the Live Preview.</h1><p class="chai-bg-pink nebhnani chai-t-purple chai-opacity-100">  Not that easy to build it is.</p></body></html>';
+
+  demoBtn.addEventListener("click", () => {
+    inputHTML.value = data;
+    spanText.style.color = "green";
+    spanText.textContent = `demo data added. Try the Engine.`;
+  });
+}
